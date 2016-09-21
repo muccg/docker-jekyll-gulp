@@ -1,7 +1,7 @@
 version: '2'
 services:
 
-  bpa-ckan:
+  jekyll-gulp:
     build:
       context: ./
       dockerfile: Dockerfile
