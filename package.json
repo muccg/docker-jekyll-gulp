@@ -1,0 +1,16 @@
+{
+  "name": "jekyllgulp",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Jekyll and Gulp environment for CCG",
+  "repository": "https://github.com/muccg/docker-jekyll-gulp",
+  "license": "GPL3",
+  "dependencies": {},
+  "scripts": {
+    "postinstall": "bower install --config.interactive=false"
+  },
+  "devDependencies": {
+    "bower": "~1.6.2",
+    "gulp": "^3.9.0"
+  }
+}

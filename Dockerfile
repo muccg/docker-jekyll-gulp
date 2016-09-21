@@ -11,6 +11,8 @@ ENV PIP_INDEX_URL $ARG_PIP_INDEX_URL
 ENV PIP_TRUSTED_HOST $ARG_PIP_TRUSTED_HOST
 ENV PIP_NO_CACHE_DIR "off"
 
+ENV NODE_MODULES /npm/node_modules
+
 RUN env | sort
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -30,15 +32,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libxml2-dev \
   libxslt1-dev \
   python-pil \
+  ruby \
+  ruby-dev \
   zlib1g-dev \
+  nodejs \
+  nodejs-legacy \
+  npm \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN yes | gem update --no-document -- --use-system-libraries && \
+RUN yes | gem update --system --no-document -- --use-system-libraries && \
+RUN yes | gem install jekyll
+
+# Cache npm deps into /npm
+COPY package.json /npm/package.json
+RUN cd /npm && npm install --ignore-scripts
+    
+# Cache bower deps into /bower
+COPY bower.json /bower/bower.json
+RUN cd /bower && /npm/node_modules/.bin/bower install --allow-root --config.interactive=false
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 VOLUME ["/src", "/target"]
 
 # Drop privileges, set home for ccg-user
-USER ccg-user
+# USER ccg-user
 ENV HOME /data
 WORKDIR /data
 

@@ -1,0 +1,9 @@
+node_modules
+bower_components
+/.tmp/
+/dist/
+/build/
+/data/
+__pycache__
+*.swp
+.version
