@@ -56,10 +56,10 @@ RUN cd /bower && /npm/node_modules/.bin/bower install --allow-root --config.inte
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-VOLUME ["/src", "/target"]
+VOLUME ["/app", "/data"]
 
 # Drop privileges, set home for ccg-user
-# USER ccg-user
+USER ccg-user
 ENV HOME /data
 WORKDIR /data
 
