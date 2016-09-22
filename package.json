@@ -7,10 +7,11 @@
   "license": "GPL3",
   "dependencies": {},
   "devDependencies": {
-    "bower": "~1.6.2",
-    "gulp": "^3.9.0",
-    "gulp-bower": "0.0.10",
-    "gulp-notify": "^2.2.0",
-    "gulp-ruby-sass": "^0.7.1"
+    "bower": "1.7.9",
+    "gulp": "3.9.1",
+    "gulp-bower": "0.0.13",
+    "gulp-uglify": "2.0.0",
+    "gulp-notify": "2.2.0",
+    "gulp-ruby-sass": "2.0.4"
   }
 }

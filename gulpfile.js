@@ -11,6 +11,14 @@ gulp.task('icons', function() {
         .pipe(gulp.dest('/app/site/generated/fonts'));
 });
 
+gulp.task('minify-js', function() {
+    return gulp.src(
+            '/bower/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+            '/bower/bower_components/jquery/dist/jquery.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('/app/site/generated/js/site.js'));
+});
+
 gulp.task('css', function() {
     return gulp.src(config.sassPath + '/style.scss')
         .pipe(sass({
@@ -32,4 +40,4 @@ gulp.task('watch', function() {
     gulp.watch(config.sassPath + '/**/*.scss', ['css']);
 });
 
-gulp.task('default', ['icons', 'css']);
+gulp.task('default', ['minify-js', 'icons', 'css']);
