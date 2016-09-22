@@ -23,7 +23,7 @@ if [ "$1" = 'build' ]; then
     echo "[Run] building production tarball"
     gulp_run
     cd /app/site && bundle exec jekyll build
-    cd /app/site/_site && exec tar czvf /build/angelman.tar.gz .
+    cd /app/site/_site && exec tar czf /build/angelman.tar.gz .
 fi
 
 echo "[RUN]: Builtin command not provided [uwsgi]"
