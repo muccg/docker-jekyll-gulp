@@ -19,11 +19,11 @@ if [ "$1" = 'dev' ]; then
     cd /app/site && exec bundle exec jekyll serve --host=0.0.0.0
 fi
 
-if [ "$1" = 'build' ]; then
+if [ "$1" = 'releasetarball' ]; then
     echo "[Run] building production tarball"
     gulp_run
     cd /app/site && bundle exec jekyll build
-    cd /app/site/_site && exec tar czf /build/angelman.tar.gz .
+    cd /app/site/_site && exec tar czf /build/${TARBALL_NAME}-${TARBALL_GIT_TAG}.tar.gz .
 fi
 
 echo "[RUN]: Builtin command not provided [uwsgi]"

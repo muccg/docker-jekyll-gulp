@@ -5,7 +5,9 @@ MAINTAINER https://github.com/muccg/docker-jekyll-gulp
 # Unchanged, these defaults allow pip to behave as normal
 ARG ARG_PIP_INDEX_URL="https://pypi.python.org/simple"
 ARG ARG_PIP_TRUSTED_HOST="127.0.0.1"
+ARG ARG_GIT_TAG=next_release
 
+ENV GIT_TAG $ARG_GIT_TAG
 ENV PROJECT_NAME jekyll-gulp
 ENV PIP_INDEX_URL $ARG_PIP_INDEX_URL
 ENV PIP_TRUSTED_HOST $ARG_PIP_TRUSTED_HOST
@@ -40,8 +42,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   npm \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN yes | gem update --no-document -- --use-system-libraries && \
-RUN yes | gem update --system --no-document -- --use-system-libraries && \
+RUN yes | gem update --no-document -- --use-system-libraries
+RUN yes | gem update --system --no-document -- --use-system-libraries
 RUN yes | gem install jekyll
 RUN yes | gem install bundler
 RUN yes | gem install minima
