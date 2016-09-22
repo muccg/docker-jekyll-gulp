@@ -9,7 +9,7 @@ npm_install()
 gulp_run()
 {
     cd /app
-    rm -rf public/
+    rm -rf site/generated/
     ./node_modules/.bin/gulp
 }
 
