@@ -1,21 +1,14 @@
 var gulp = require('gulp'),    
     sass = require('gulp-ruby-sass')
     notify = require("gulp-notify")
-    bower = require('gulp-bower');
-
 var config = {
-    sassPath: './resources/sass',
-    bowerDir: './bower_components'
+    sassPath: '/app/sass',
+    bowerDir: '/bower/bower_components/',
 }
-
-gulp.task('bower', function() {
-    return bower()
-        .pipe(gulp.dest(config.bowerDir))
-});
 
 gulp.task('icons', function() {
     return gulp.src(config.bowerDir + '/font-awesome/fonts/**.*')
-        .pipe(gulp.dest('./public/fonts'));
+        .pipe(gulp.dest('/app/site/generated/fonts'));
 });
 
 gulp.task('css', function() {
@@ -23,7 +16,7 @@ gulp.task('css', function() {
         .pipe(sass({
             style: 'compressed',
             loadPath: [
-                './resources/sass',
+                config.sassPath,
                 config.bowerDir + '/bootstrap-sass/assets/stylesheets',
                 config.bowerDir + '/font-awesome/scss',
             ]
@@ -31,7 +24,7 @@ gulp.task('css', function() {
             .on("error", notify.onError(function (error) {
                 return "Error: " + error.message;
             })))
-        .pipe(gulp.dest('./public/css'));
+        .pipe(gulp.dest('/app/site/generated/css'));
 });
 
 // Rerun the task when a file changes
@@ -39,4 +32,4 @@ gulp.task('watch', function() {
     gulp.watch(config.sassPath + '/**/*.scss', ['css']);
 });
 
-gulp.task('default', ['bower', 'icons', 'css']);
+gulp.task('default', ['icons', 'css']);

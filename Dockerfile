@@ -56,7 +56,13 @@ RUN cd /bower && /npm/node_modules/.bin/bower install --allow-root --config.inte
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-VOLUME ["/app", "/data"]
+COPY gulpfile.js /gulpbuild/gulpfile.js
+COPY package.json /gulpbuild/package.json
+RUN cd /gulpbuild && npm install
+
+RUN chown -R ccg-user /gulpbuild/
+
+VOLUME ["/app", "/data", "/gulpbuild"]
 
 # Drop privileges, set home for ccg-user
 USER ccg-user
