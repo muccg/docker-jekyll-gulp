@@ -1,6 +1,7 @@
 var gulp = require('gulp'),    
     sass = require('gulp-ruby-sass')
     notify = require("gulp-notify")
+    uglify = require("gulp-uglify")
 var config = {
     sassPath: '/app/sass',
     bowerDir: '/bower/bower_components/',
@@ -12,11 +13,9 @@ gulp.task('icons', function() {
 });
 
 gulp.task('minify-js', function() {
-    return gulp.src(
-            '/bower/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
-            '/bower/bower_components/jquery/dist/jquery.js')
+    return gulp.src(['/bower/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js', '/bower/bower_components/jquery/dist/jquery.js'])
         .pipe(uglify())
-        .pipe(gulp.dest('/app/site/generated/js/site.js'));
+        .pipe(gulp.dest('/app/site/generated/js/'));
 });
 
 gulp.task('css', function() {
