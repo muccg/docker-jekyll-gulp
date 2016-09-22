@@ -43,6 +43,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN yes | gem update --no-document -- --use-system-libraries && \
 RUN yes | gem update --system --no-document -- --use-system-libraries && \
 RUN yes | gem install jekyll
+RUN yes | gem install bundler
+RUN yes | gem install minima
 
 # Cache npm deps into /npm
 COPY package.json /npm/package.json
@@ -60,6 +62,8 @@ VOLUME ["/src", "/target"]
 # USER ccg-user
 ENV HOME /data
 WORKDIR /data
+
+EXPOSE 4000
 
 # entrypoint shell script that by default starts uwsgi
 ENTRYPOINT ["/docker-entrypoint.sh"]
