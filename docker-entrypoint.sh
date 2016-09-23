@@ -18,10 +18,8 @@ if [ "$1" = 'dev' ]; then
 
     gulp_run
 
-    cd /app/site 
-    bundle 
-
-    exec jekyll serve --host=0.0.0.0
+    cd /app/site
+    exec bundle exec jekyll serve --host=0.0.0.0
 fi
 
 if [ "$1" = 'releasetarball' ]; then
@@ -30,8 +28,7 @@ if [ "$1" = 'releasetarball' ]; then
     gulp_run
 
     cd /app/site
-    bundle
-    jekyll build
+    bundle exec jekyll build
 
     cd /app/site/_site
     exec tar czf /build/${TARBALL_NAME}-${TARBALL_GIT_TAG}.tar.gz .
