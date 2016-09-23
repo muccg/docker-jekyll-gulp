@@ -1,21 +1,18 @@
-FROM muccg/python-base:debian8-2.7
-MAINTAINER https://github.com/muccg/docker-jekyll-gulp
+FROM buildpack-deps:jessie-curl
+MAINTAINER https://github.com/muccg/
 
-# At build time change these args to use a local devpi mirror
-# Unchanged, these defaults allow pip to behave as normal
-ARG ARG_PIP_INDEX_URL="https://pypi.python.org/simple"
-ARG ARG_PIP_TRUSTED_HOST="127.0.0.1"
 ARG ARG_GIT_TAG=next_release
 
 ENV GIT_TAG $ARG_GIT_TAG
 ENV PROJECT_NAME jekyll-gulp
-ENV PIP_INDEX_URL $ARG_PIP_INDEX_URL
-ENV PIP_TRUSTED_HOST $ARG_PIP_TRUSTED_HOST
-ENV PIP_NO_CACHE_DIR "off"
-
 ENV NODE_MODULES /npm/node_modules
 
 RUN env | sort
+
+RUN addgroup --gid 1000 jekyll \
+    && adduser --disabled-password --home /data --no-create-home --system -q --uid 1000 --ingroup jekyll jekyll \
+    && mkdir /data \
+    && chown jekyll:jekyll /data
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   build-essential \
@@ -33,15 +30,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libxml2 \
   libxml2-dev \
   libxslt1-dev \
+  nodejs \
+  nodejs-legacy \
+  npm \
   python-pil \
   ruby \
   ruby-dev \
   zlib1g-dev \
-  nodejs \
-  nodejs-legacy \
-  npm \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 RUN yes | gem update --no-document -- --use-system-libraries
 RUN yes | gem update --system --no-document -- --use-system-libraries
 RUN yes | gem install jekyll
@@ -56,18 +54,18 @@ RUN cd /npm && npm install --ignore-scripts
 COPY bower.json /bower/bower.json
 RUN cd /bower && /npm/node_modules/.bin/bower install --allow-root --config.interactive=false
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-
 COPY gulpfile.js /gulpbuild/gulpfile.js
 COPY package.json /gulpbuild/package.json
 RUN cd /gulpbuild && npm install
 
-RUN chown -R ccg-user /gulpbuild/
+RUN chown -R jekyll /gulpbuild/
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 VOLUME ["/app", "/data", "/gulpbuild"]
 
-# Drop privileges, set home for ccg-user
-USER ccg-user
+# Drop privileges, set home for jekyll
+USER jekyll
 ENV HOME /data
 WORKDIR /data
 
@@ -75,4 +73,4 @@ EXPOSE 4000
 
 # entrypoint shell script that by default starts uwsgi
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["build"]
+CMD ["dev"]
